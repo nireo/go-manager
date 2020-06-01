@@ -25,3 +25,17 @@ func GetTerminalWidth() uint {
 	}
 	return uint(ws.Col)
 }
+
+// GetTerminalHeight returns the height of the terminal
+func GetTerminalHeight() uint {
+	ws := &winsize{}
+	retCode, _, errno := syscall.Syscall(syscall.SYS_IOCTL,
+		uintptr(syscall.Stdin),
+		uintptr(syscall.TIOCGWINSZ),
+		uintptr(unsafe.Pointer(ws)))
+
+	if int(retCode) == -1 {
+		panic(errno)
+	}
+	return uint(ws.Row)
+}

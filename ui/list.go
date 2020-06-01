@@ -1,4 +1,4 @@
-package view
+package ui
 
 import (
 	"log"
@@ -17,16 +17,7 @@ func RenderList() {
 	l := widgets.NewList()
 	l.Title = "List"
 	l.Rows = []string{
-		"[0] github.com/gizak/termui/v3",
-		"[1] [你好，世界](fg:blue)",
-		"[2] [こんにちは世界](fg:red)",
-		"[3] [color](fg:white,bg:green) output",
-		"[4] output.go",
-		"[5] random_out.go",
-		"[6] dashboard.go",
-		"[7] foo",
-		"[8] bar",
-		"[9] baz",
+		"?",
 	}
 	l.TextStyle = ui.NewStyle(ui.ColorYellow)
 	l.WrapText = false
