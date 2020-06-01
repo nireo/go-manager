@@ -8,4 +8,5 @@ import (
 
 func main() {
 	fmt.Printf("%d", utils.GetTerminalWidth())
+	// view.RenderList()
 }
