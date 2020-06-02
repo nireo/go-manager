@@ -21,9 +21,10 @@ type BasicInfo struct {
 
 // View data structure
 type View struct {
-	List           *widgets.List
-	SystemInfoList *widgets.List
-	Data           BasicInfo
+	List            *widgets.List
+	SystemInfoList  *widgets.List
+	ProcessesWindow *widgets.Table
+	Data            BasicInfo
 }
 
 // Init initializes the ui
@@ -33,14 +34,21 @@ func (view *View) Init() {
 
 	view.SystemInfoList.Title = "System information"
 	view.SystemInfoList.SetRect(int(GetTerminalWidth()/2), 0, int(GetTerminalWidth()), int(GetTerminalHeight()/4))
+
+	view.ProcessesWindow.Title = "Processes"
+	view.ProcessesWindow.SetRect(0, int(GetTerminalHeight()/3), int(GetTerminalWidth()), int(GetTerminalHeight()/3))
+	view.ProcessesWindow.Rows = [][]string{
+		[]string{"PID", "USER", "CPU%"},
+	}
 }
 
 // NewView returns a pointer to an view struct
 func NewView() *View {
 	view := &View{
-		List:           widgets.NewList(),
-		SystemInfoList: widgets.NewList(),
-		Data:           BasicInfo{},
+		List:            widgets.NewList(),
+		SystemInfoList:  widgets.NewList(),
+		ProcessesWindow: widgets.NewTable(),
+		Data:            BasicInfo{},
 	}
 
 	view.Init()
@@ -55,10 +63,10 @@ func (view *View) Resize() {
 // Render is used to update screen with new data.
 func (view *View) Render(data BasicInfo) {
 	view.List.Rows = []string{
-		fmt.Sprintf("Core 1: %.1f", data.CorePercentages[0]),
-		fmt.Sprintf("Core 2: %.1f", data.CorePercentages[1]),
-		fmt.Sprintf("Core 3: %.1f", data.CorePercentages[2]),
-		fmt.Sprintf("Core 4: %.1f", data.CorePercentages[3]),
+		fmt.Sprintf("Core 1: [] %.1f", data.CorePercentages[0]),
+		fmt.Sprintf("Core 2: [] %.1f", data.CorePercentages[1]),
+		fmt.Sprintf("Core 3: [] %.1f", data.CorePercentages[2]),
+		fmt.Sprintf("Core 4: [] %.1f", data.CorePercentages[3]),
 		fmt.Sprintf("Memory: (%.1f/100.0)", data.MemoryUsedPercent),
 		"Swap: ",
 	}
@@ -70,6 +78,5 @@ func (view *View) Render(data BasicInfo) {
 		fmt.Sprintf("Processes: %d", data.Procs),
 	}
 
-	ui.Render(view.List)
-	ui.Render(view.SystemInfoList)
+	ui.Render(view.List, view.SystemInfoList, view.ProcessesWindow)
 }
