@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -40,7 +39,6 @@ func Run() {
 				break
 			}
 
-			fmt.Println(data)
 			view.Render(data)
 		}
 	}

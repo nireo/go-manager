@@ -32,7 +32,7 @@ func (view *View) Init() {
 	view.List.SetRect(0, 0, int(GetTerminalWidth()/2), int(GetTerminalHeight()/4))
 
 	view.SystemInfoList.Title = "System information"
-	view.SystemInfoList.SetRect(int(GetTerminalWidth()/2), 0, int(GetTerminalWidth()/2), int(GetTerminalHeight()/4))
+	view.SystemInfoList.SetRect(int(GetTerminalWidth()/2), 0, int(GetTerminalWidth()), int(GetTerminalHeight()/4))
 }
 
 // NewView returns a pointer to an view struct
@@ -63,5 +63,13 @@ func (view *View) Render(data BasicInfo) {
 		"Swap: ",
 	}
 
+	view.SystemInfoList.Rows = []string{
+		fmt.Sprintf("Hostname: %s", data.Hostname),
+		fmt.Sprintf("Kernel: %s", data.KernelVersion),
+		fmt.Sprintf("Uptime: %s", ConvertTime(data.Uptime)),
+		fmt.Sprintf("Processes: %d", data.Procs),
+	}
+
 	ui.Render(view.List)
+	ui.Render(view.SystemInfoList)
 }
