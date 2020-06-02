@@ -28,6 +28,22 @@ func (view *View) Init() {
 	view.List.SetRect(0, 0, int(GetTerminalWidth()), int(GetTerminalHeight()))
 }
 
+// NewView returns a pointer to an view struct
+func NewView() *View {
+	view := &View{
+		List: widgets.NewList(),
+		Data: BasicInfo{},
+	}
+
+	view.Init()
+	return view
+}
+
+// Resize is used when an terminal resize event occurs and it updates list dimensions accordinly
+func (view *View) Resize() {
+	view.List.SetRect(0, 0, int(GetTerminalWidth()), int(GetTerminalHeight()))
+}
+
 // Render is used to update screen with new data.
 func (view *View) Render(data BasicInfo) {
 	view.List.Rows = []string{
