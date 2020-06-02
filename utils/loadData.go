@@ -1,7 +1,10 @@
 package utils
 
 import (
+	"time"
+
 	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
 )
 
@@ -9,7 +12,8 @@ import (
 func LoadData() (BasicInfo, error) {
 	var data BasicInfo
 
-	percentage, err := cpu.Percent(1, true)
+	duration, err := time.ParseDuration("1s")
+	percentage, err := cpu.Percent(duration, true)
 	if err != nil {
 		return data, err
 	}
@@ -23,6 +27,16 @@ func LoadData() (BasicInfo, error) {
 	data.MemoryUsed = memory.Used
 	data.TotalMemory = memory.Total
 	data.MemoryUsedPercent = memory.UsedPercent
+
+	info, err := host.Info()
+	if err != nil {
+		return data, err
+	}
+
+	data.Hostname = info.Hostname
+	data.Uptime = info.Uptime
+	data.KernelVersion = info.KernelVersion
+	data.Procs = info.Procs
 
 	return data, nil
 }

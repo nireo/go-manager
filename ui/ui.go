@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -19,7 +20,7 @@ func Run() {
 	view := utils.NewView()
 
 	ev := ui.PollEvents()
-	tick := time.Tick(time.Second)
+	tick := time.Tick(time.Second * 2)
 
 	// main loop
 	for {
@@ -39,6 +40,7 @@ func Run() {
 				break
 			}
 
+			fmt.Println(data)
 			view.Render(data)
 		}
 	}
