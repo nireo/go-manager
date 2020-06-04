@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/shirou/gopsutil/cpu"
@@ -38,6 +39,15 @@ func LoadData() (BasicInfo, error) {
 	data.Uptime = info.Uptime
 	data.KernelVersion = info.KernelVersion
 	data.Procs = info.Procs
+
+	tempProcesses := LoadAllProcesses()
+	var processes [][]string
+	for index := range tempProcesses {
+		singleProcess := ChangeProcessToTableFormat(tempProcesses[index])
+		processes = append(processes, singleProcess)
+	}
+
+	data.Processes = processes
 
 	return data, nil
 }
@@ -94,4 +104,17 @@ func LoadSingleProcessData(process *process.Process) Process {
 	}
 
 	return newProcessEntry
+}
+
+// ChangeProcessToTableFormat returns all the process fields in an array of string
+func ChangeProcessToTableFormat(p Process) []string {
+	var tableFormat []string
+	tableFormat = append(tableFormat, fmt.Sprintf("%d", p.Pid))
+	tableFormat = append(tableFormat, p.Name)
+	tableFormat = append(tableFormat, p.User)
+	tableFormat = append(tableFormat, fmt.Sprintf("%.2f", p.CPUPercentage))
+	tableFormat = append(tableFormat, p.Exe)
+	tableFormat = append(tableFormat, fmt.Sprintf("%t", p.Running))
+
+	return tableFormat
 }

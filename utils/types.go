@@ -17,6 +17,7 @@ type BasicInfo struct {
 	Uptime            uint64
 	KernelVersion     string
 	Procs             uint64
+	Processes         [][]string
 }
 
 // Process includes all the types for the table view
