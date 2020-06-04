@@ -19,6 +19,16 @@ type BasicInfo struct {
 	Procs             uint64
 }
 
+// Process includes all the types for the table view
+type Process struct {
+	Pid           uint64
+	Name          string
+	CPUPercentage float64
+	Exe           string
+	Running       bool
+	User          string
+}
+
 // View data structure
 type View struct {
 	List            *widgets.List
@@ -36,9 +46,9 @@ func (view *View) Init() {
 	view.SystemInfoList.SetRect(int(GetTerminalWidth()/2), 0, int(GetTerminalWidth()), int(GetTerminalHeight()/4))
 
 	view.ProcessesWindow.Title = "Processes"
-	view.ProcessesWindow.SetRect(0, int(GetTerminalHeight()/3), int(GetTerminalWidth()), int(GetTerminalHeight()/3))
+	view.ProcessesWindow.SetRect(0, 13, int(GetTerminalWidth()), int(GetTerminalHeight()/3)*2)
 	view.ProcessesWindow.Rows = [][]string{
-		[]string{"PID", "USER", "CPU%"},
+		[]string{"PID", "NAME", "USER", "CPU%", "EXECUTION PATH", "RUNNING"},
 	}
 }
 
