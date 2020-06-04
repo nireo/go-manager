@@ -21,7 +21,7 @@ type BasicInfo struct {
 
 // Process includes all the types for the table view
 type Process struct {
-	Pid           uint64
+	Pid           int32
 	Name          string
 	CPUPercentage float64
 	Exe           string
