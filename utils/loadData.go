@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -67,43 +66,48 @@ func LoadAllProcesses() []Process {
 
 	var filteredProcesses []Process
 	for index := range processes {
-		filteredProcesses = append(filteredProcesses, LoadSingleProcessData(processes[index]))
+		singleProcessData, err := LoadSingleProcessData(processes[index])
+		if err != nil {
+			// skip over entries where finding information failed
+			continue
+		}
+
+		filteredProcesses = append(filteredProcesses, singleProcessData)
 	}
 
 	return filteredProcesses
 }
 
 // LoadSingleProcessData loads all the data into the predefined process struct
-func LoadSingleProcessData(process *process.Process) Process {
+func LoadSingleProcessData(process *process.Process) (Process, error) {
+	var newProcess Process
 	cpuPercentage, err := process.CPUPercent()
 	if err != nil {
-		log.Fatalf("failed to get cpu percentage: %v", err)
+		return newProcess, err
 	}
 
 	isRunning, err := process.IsRunning()
 	if err != nil {
-		log.Fatalf("failed to get running status: %v", err)
+		return newProcess, err
 	}
 
 	user, err := process.Username()
 	if err != nil {
-		log.Fatalf("failed to get username: %v", err)
+		return newProcess, err
 	}
 
 	name, err := process.Name()
 	if err != nil {
-		log.Fatalf("failed to get name: %v", err)
+		return newProcess, err
 	}
 
-	newProcessEntry := Process{
-		Pid:           process.Pid,
-		CPUPercentage: cpuPercentage,
-		Running:       isRunning,
-		User:          user,
-		Name:          name,
-	}
+	newProcess.CPUPercentage = cpuPercentage
+	newProcess.Running = isRunning
+	newProcess.User = user
+	newProcess.Name = name
+	newProcess.Pid = process.Pid
 
-	return newProcessEntry
+	return newProcess, nil
 }
 
 // ChangeProcessToTableFormat returns all the process fields in an array of string
