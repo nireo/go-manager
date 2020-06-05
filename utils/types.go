@@ -25,7 +25,6 @@ type Process struct {
 	Pid           int32
 	Name          string
 	CPUPercentage float64
-	Exe           string
 	Running       bool
 	User          string
 }
@@ -49,7 +48,7 @@ func (view *View) Init() {
 	view.ProcessesWindow.Title = "Processes"
 	view.ProcessesWindow.SetRect(0, 13, int(GetTerminalWidth()), int(GetTerminalHeight()/3)*2)
 	view.ProcessesWindow.Rows = [][]string{
-		[]string{"PID", "NAME", "USER", "CPU%", "EXECUTION PATH", "RUNNING"},
+		[]string{"PID", "NAME", "USER", "CPU%", "RUNNING"},
 	}
 }
 
@@ -88,6 +87,8 @@ func (view *View) Render(data BasicInfo) {
 		fmt.Sprintf("Uptime: %s", ConvertTime(data.Uptime)),
 		fmt.Sprintf("Processes: %d", data.Procs),
 	}
+
+	view.ProcessesWindow.Rows = data.Processes
 
 	ui.Render(view.List, view.SystemInfoList, view.ProcessesWindow)
 }

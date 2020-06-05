@@ -42,6 +42,10 @@ func LoadData() (BasicInfo, error) {
 
 	tempProcesses := LoadAllProcesses()
 	var processes [][]string
+
+	// add the header row to the list
+	processes = append(processes, []string{"PID", "NAME", "USER", "CPU%", "EXECUTION PATH", "RUNNING"})
+
 	for index := range tempProcesses {
 		singleProcess := ChangeProcessToTableFormat(tempProcesses[index])
 		processes = append(processes, singleProcess)
@@ -69,11 +73,6 @@ func LoadAllProcesses() []Process {
 
 // LoadSingleProcessData loads all the data into the predefined process struct
 func LoadSingleProcessData(process *process.Process) Process {
-	exe, err := process.Exe()
-	if err != nil {
-		panic(err)
-	}
-
 	cpuPercentage, err := process.CPUPercent()
 	if err != nil {
 		panic(err)
@@ -96,7 +95,6 @@ func LoadSingleProcessData(process *process.Process) Process {
 
 	newProcessEntry := Process{
 		Pid:           process.Pid,
-		Exe:           exe,
 		CPUPercentage: cpuPercentage,
 		Running:       isRunning,
 		User:          user,
@@ -113,7 +111,6 @@ func ChangeProcessToTableFormat(p Process) []string {
 	tableFormat = append(tableFormat, p.Name)
 	tableFormat = append(tableFormat, p.User)
 	tableFormat = append(tableFormat, fmt.Sprintf("%.2f", p.CPUPercentage))
-	tableFormat = append(tableFormat, p.Exe)
 	tableFormat = append(tableFormat, fmt.Sprintf("%t", p.Running))
 
 	return tableFormat
