@@ -50,6 +50,7 @@ func (view *View) Init() {
 	view.ProcessesWindow.Rows = [][]string{
 		[]string{"PID", "NAME", "USER", "CPU%", "RUNNING"},
 	}
+	view.ProcessesWindow.RowSeparator = false
 }
 
 // NewView returns a pointer to an view struct

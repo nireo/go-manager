@@ -2,6 +2,8 @@ package utils
 
 import (
 	"fmt"
+	"log"
+	"strings"
 	"time"
 
 	"github.com/shirou/gopsutil/cpu"
@@ -44,7 +46,7 @@ func LoadData() (BasicInfo, error) {
 	var processes [][]string
 
 	// add the header row to the list
-	processes = append(processes, []string{"PID", "NAME", "USER", "CPU%", "EXECUTION PATH", "RUNNING"})
+	processes = append(processes, []string{"PID", "NAME", "USER", "CPU%", "RUNNING"})
 
 	for index := range tempProcesses {
 		singleProcess := ChangeProcessToTableFormat(tempProcesses[index])
@@ -75,22 +77,22 @@ func LoadAllProcesses() []Process {
 func LoadSingleProcessData(process *process.Process) Process {
 	cpuPercentage, err := process.CPUPercent()
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to get cpu percentage: %v", err)
 	}
 
 	isRunning, err := process.IsRunning()
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to get running status: %v", err)
 	}
 
 	user, err := process.Username()
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to get username: %v", err)
 	}
 
 	name, err := process.Name()
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to get name: %v", err)
 	}
 
 	newProcessEntry := Process{
@@ -106,12 +108,15 @@ func LoadSingleProcessData(process *process.Process) Process {
 
 // ChangeProcessToTableFormat returns all the process fields in an array of string
 func ChangeProcessToTableFormat(p Process) []string {
+	isRunningString := fmt.Sprintf("%t", p.Running)
+	isRunningString = strings.ToUpper(isRunningString)
+
 	var tableFormat []string
 	tableFormat = append(tableFormat, fmt.Sprintf("%d", p.Pid))
 	tableFormat = append(tableFormat, p.Name)
 	tableFormat = append(tableFormat, p.User)
 	tableFormat = append(tableFormat, fmt.Sprintf("%.2f", p.CPUPercentage))
-	tableFormat = append(tableFormat, fmt.Sprintf("%t", p.Running))
+	tableFormat = append(tableFormat, fmt.Sprintf("[%s](fg:green)", isRunningString))
 
 	return tableFormat
 }
