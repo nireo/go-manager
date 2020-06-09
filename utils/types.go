@@ -35,6 +35,7 @@ type View struct {
 	SystemInfoList  *widgets.List
 	ProcessesWindow *widgets.Table
 	Data            BasicInfo
+	Grid            *ui.Grid
 }
 
 // Init initializes the ui
@@ -51,6 +52,18 @@ func (view *View) Init() {
 		[]string{"PID", "NAME", "USER", "CPU%", "RUNNING"},
 	}
 	view.ProcessesWindow.RowSeparator = false
+
+	terminalWidth, terminalHeight := ui.TerminalDimensions()
+	view.Grid.SetRect(0, 0, terminalWidth, terminalHeight)
+	view.Grid.Set(
+		ui.NewRow(1.0/3,
+			ui.NewCol(1.0/2, view.List),
+			ui.NewCol(1.0/2, view.SystemInfoList),
+		),
+		ui.NewRow((1.0/3)*2,
+			ui.NewCol(1.0, view.ProcessesWindow),
+		),
+	)
 }
 
 // NewView returns a pointer to an view struct
@@ -60,6 +73,7 @@ func NewView() *View {
 		SystemInfoList:  widgets.NewList(),
 		ProcessesWindow: widgets.NewTable(),
 		Data:            BasicInfo{},
+		Grid:            ui.NewGrid(),
 	}
 
 	view.Init()
@@ -91,5 +105,6 @@ func (view *View) Render(data BasicInfo) {
 
 	view.ProcessesWindow.Rows = data.Processes
 
-	ui.Render(view.List, view.SystemInfoList, view.ProcessesWindow)
+	//ui.Render(view.List, view.SystemInfoList, view.ProcessesWindow)
+	ui.Render(view.Grid)
 }
