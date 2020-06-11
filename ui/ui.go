@@ -35,6 +35,10 @@ func Run() {
 			case ui.ResizeEvent:
 				view.Resize()
 			}
+			switch e.ID {
+			case "q", "<C-c>":
+				return
+			}
 
 		// handle the tick sent to time channel
 		case <-tick:
