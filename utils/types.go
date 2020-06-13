@@ -66,7 +66,7 @@ func (view *View) Init() {
 	)
 }
 
-// NewView returns a pointer to an view struct
+// NewView returns a pointer to a view struct
 func NewView() *View {
 	view := &View{
 		List:            widgets.NewList(),
@@ -88,10 +88,10 @@ func (view *View) Resize() {
 // Render is used to update screen with new data.
 func (view *View) Render(data BasicInfo) {
 	view.List.Rows = []string{
-		fmt.Sprintf("Core 1: [] %.1f", data.CorePercentages[0]),
-		fmt.Sprintf("Core 2: [] %.1f", data.CorePercentages[1]),
-		fmt.Sprintf("Core 3: [] %.1f", data.CorePercentages[2]),
-		fmt.Sprintf("Core 4: [] %.1f", data.CorePercentages[3]),
+		fmt.Sprintf("Core 1: [%s] %.1f", CPUProgressBar(data.CorePercentages[0]), data.CorePercentages[0]),
+		fmt.Sprintf("Core 2: [%s] %.1f", CPUProgressBar(data.CorePercentages[1]), data.CorePercentages[1]),
+		fmt.Sprintf("Core 3: [%s] %.1f", CPUProgressBar(data.CorePercentages[2]), data.CorePercentages[2]),
+		fmt.Sprintf("Core 4: [%s] %.1f", CPUProgressBar(data.CorePercentages[3]), data.CorePercentages[3]),
 		fmt.Sprintf("Memory: (%.1f/100.0)", data.MemoryUsedPercent),
 		"Swap: ",
 	}

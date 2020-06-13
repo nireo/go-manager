@@ -29,9 +29,6 @@ func Run() {
 		// handle different events
 		case e := <-ev:
 			switch e.Type {
-			case ui.KeyboardEvent:
-				// quit
-				return
 			case ui.ResizeEvent:
 				view.Resize()
 			}
