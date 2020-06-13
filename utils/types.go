@@ -88,12 +88,12 @@ func (view *View) Resize() {
 // Render is used to update screen with new data.
 func (view *View) Render(data BasicInfo) {
 	view.List.Rows = []string{
-		fmt.Sprintf("Core 1: [%s] %.1f", CPUProgressBar(data.CorePercentages[0]), data.CorePercentages[0]),
-		fmt.Sprintf("Core 2: [%s] %.1f", CPUProgressBar(data.CorePercentages[1]), data.CorePercentages[1]),
-		fmt.Sprintf("Core 3: [%s] %.1f", CPUProgressBar(data.CorePercentages[2]), data.CorePercentages[2]),
-		fmt.Sprintf("Core 4: [%s] %.1f", CPUProgressBar(data.CorePercentages[3]), data.CorePercentages[3]),
-		fmt.Sprintf("Memory: (%.1f/100.0)", data.MemoryUsedPercent),
-		"Swap: ",
+		fmt.Sprintf("[Core 1](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[0]), data.CorePercentages[0]),
+		fmt.Sprintf("[Core 2](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[1]), data.CorePercentages[1]),
+		fmt.Sprintf("[Core 3](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[2]), data.CorePercentages[2]),
+		fmt.Sprintf("[Core 4](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[3]), data.CorePercentages[3]),
+		fmt.Sprintf("[Memory](fg:blue): (%.1f/100.0)", data.MemoryUsedPercent),
+		"[Swap](fg:blue): ",
 	}
 
 	view.SystemInfoList.Rows = []string{
