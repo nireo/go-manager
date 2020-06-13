@@ -88,6 +88,7 @@ func (view *View) Resize() {
 // Render is used to update screen with new data.
 func (view *View) Render(data BasicInfo) {
 	view.List.Rows = []string{
+		"",
 		fmt.Sprintf("[Core 1](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[0]), data.CorePercentages[0]),
 		fmt.Sprintf("[Core 2](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[1]), data.CorePercentages[1]),
 		fmt.Sprintf("[Core 3](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[2]), data.CorePercentages[2]),
@@ -97,10 +98,11 @@ func (view *View) Render(data BasicInfo) {
 	}
 
 	view.SystemInfoList.Rows = []string{
-		fmt.Sprintf("Hostname: %s", data.Hostname),
-		fmt.Sprintf("Kernel: %s", data.KernelVersion),
-		fmt.Sprintf("Uptime: %s", ConvertTime(data.Uptime)),
-		fmt.Sprintf("Processes: %d", data.Procs),
+		"",
+		fmt.Sprintf("[Hostname](fg:blue): %s", data.Hostname),
+		fmt.Sprintf("[Kernel](fg:blue): %s", data.KernelVersion),
+		fmt.Sprintf("[Uptime](fg:blue): %s", ConvertTime(data.Uptime)),
+		fmt.Sprintf("[Processes](fg:blue): %d", data.Procs),
 	}
 
 	view.ProcessesWindow.Rows = data.Processes

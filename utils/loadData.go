@@ -116,7 +116,7 @@ func ChangeProcessToTableFormat(p Process) []string {
 	isRunningString = strings.ToUpper(isRunningString)
 
 	var tableFormat []string
-	tableFormat = append(tableFormat, fmt.Sprintf("%d", p.Pid))
+	tableFormat = append(tableFormat, fmt.Sprintf("[%d](fg:yellow)", p.Pid))
 	tableFormat = append(tableFormat, p.Name)
 	tableFormat = append(tableFormat, p.User)
 	tableFormat = append(tableFormat, fmt.Sprintf("%.2f", p.CPUPercentage))
