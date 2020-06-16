@@ -59,10 +59,10 @@ type View struct {
 // Init initializes the ui
 func (view *View) Init() {
 	view.List.Title = "CPU & Memory information"
-	view.List.SetRect(0, 0, int(GetTerminalWidth()/2), int(GetTerminalHeight()/4))
+	view.List.SetRect(0, 0, int(GetTerminalWidth()/2), int(GetTerminalHeight()/5))
 
 	view.SystemInfoList.Title = "System information"
-	view.SystemInfoList.SetRect(int(GetTerminalWidth()/2), 0, int(GetTerminalWidth()), int(GetTerminalHeight()/4))
+	view.SystemInfoList.SetRect(int(GetTerminalWidth()/2), 0, int(GetTerminalWidth()), int(GetTerminalHeight()/5))
 
 	view.ProcessesWindow.Title = "Processes"
 	view.ProcessesWindow.SetRect(0, 13, int(GetTerminalWidth()), int(GetTerminalHeight()/3)*2)
@@ -74,11 +74,11 @@ func (view *View) Init() {
 	terminalWidth, terminalHeight := ui.TerminalDimensions()
 	view.Grid.SetRect(0, 0, terminalWidth, terminalHeight)
 	view.Grid.Set(
-		ui.NewRow(1.0/3,
+		ui.NewRow(1.0/5,
 			ui.NewCol(1.0/2, view.List),
 			ui.NewCol(1.0/2, view.SystemInfoList),
 		),
-		ui.NewRow((1.0/3)*2,
+		ui.NewRow((1.0/5)*4,
 			ui.NewCol(1.0, view.ProcessesWindow),
 		),
 	)
@@ -111,7 +111,7 @@ func (view *View) Render(data BasicInfo) {
 		fmt.Sprintf("[Core 2](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[1]), data.CorePercentages[1]),
 		fmt.Sprintf("[Core 3](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[2]), data.CorePercentages[2]),
 		fmt.Sprintf("[Core 4](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[3]), data.CorePercentages[3]),
-		fmt.Sprintf("[Memory](fg:blue): %0.2f/%0.2f GB (%0.1f/100.0)", data.Memory.Used, data.Swap.Total, data.Swap.UsedPercent),
+		fmt.Sprintf("[Memory](fg:blue): %0.2f/%0.2f GB (%0.1f/100.0)", data.Memory.Used, data.Memory.Total, data.Memory.UsedPercent),
 		fmt.Sprintf("[Swap](fg:blue) %0.2f/%0.2f GB (%0.1f/100.0)", data.Swap.Used, data.Swap.Total, data.Swap.UsedPercent),
 	}
 
