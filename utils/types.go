@@ -21,6 +21,7 @@ type BasicInfo struct {
 	OS                string
 	Platform          string
 	Swap              SwapData
+	Memory            MemoryData
 }
 
 // SwapData model holds all swap related information
@@ -28,6 +29,13 @@ type SwapData struct {
 	Total       float64
 	UsedPercent float64
 	Used        float64
+}
+
+// MemoryData model holds all memory related information
+type MemoryData struct {
+	Total       float64
+	Used        float64
+	UsedPercent float64
 }
 
 // Process includes all the types for the table view
@@ -103,7 +111,7 @@ func (view *View) Render(data BasicInfo) {
 		fmt.Sprintf("[Core 2](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[1]), data.CorePercentages[1]),
 		fmt.Sprintf("[Core 3](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[2]), data.CorePercentages[2]),
 		fmt.Sprintf("[Core 4](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[3]), data.CorePercentages[3]),
-		fmt.Sprintf("[Memory](fg:blue): (%.1f/100.0)", data.MemoryUsedPercent),
+		fmt.Sprintf("[Memory](fg:blue): %0.2f/%0.2f GB (%0.1f/100.0)", data.Memory.Used, data.Swap.Total, data.Swap.UsedPercent),
 		fmt.Sprintf("[Swap](fg:blue) %0.2f/%0.2f GB (%0.1f/100.0)", data.Swap.Used, data.Swap.Total, data.Swap.UsedPercent),
 	}
 

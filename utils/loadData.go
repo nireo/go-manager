@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"math"
 	"strings"
 	"time"
 
@@ -50,6 +49,13 @@ func LoadData() (BasicInfo, error) {
 	}
 
 	data.Swap = swapData
+
+	memoryData, err := LoadMemoryData()
+	if err != nil {
+		return data, err
+	}
+
+	data.Memory = memoryData
 
 	tempProcesses := LoadAllProcesses()
 	var processes [][]string
@@ -99,10 +105,25 @@ func LoadSwapData() (SwapData, error) {
 	swapData.UsedPercent = swap.UsedPercent
 
 	// convert the bits to gigabytes
-	swapData.Total = math.Pow10(-9) * float64(swap.Total)
-	swapData.Used = math.Pow10(-9) * float64(swap.Used)
+	swapData.Total = ConvertBits(swap.Total)
+	swapData.Used = ConvertBits(swap.Used)
 
 	return swapData, nil
+}
+
+// LoadMemoryData loads data related to virtual memory
+func LoadMemoryData() (MemoryData, error) {
+	var memoryData MemoryData
+	virtualMemory, err := mem.VirtualMemory()
+	if err != nil {
+		return memoryData, err
+	}
+
+	memoryData.Total = ConvertBits(virtualMemory.Total)
+	memoryData.Used = ConvertBits(virtualMemory.Used)
+	memoryData.UsedPercent = virtualMemory.UsedPercent
+
+	return memoryData, nil
 }
 
 // LoadSingleProcessData loads all the data into the predefined process struct
