@@ -18,6 +18,8 @@ type BasicInfo struct {
 	KernelVersion     string
 	Procs             uint64
 	Processes         [][]string
+	OS                string
+	Platform          string
 }
 
 // Process includes all the types for the table view
@@ -103,6 +105,8 @@ func (view *View) Render(data BasicInfo) {
 		fmt.Sprintf("[Kernel](fg:blue): %s", data.KernelVersion),
 		fmt.Sprintf("[Uptime](fg:blue): %s", ConvertTime(data.Uptime)),
 		fmt.Sprintf("[Processes](fg:blue): %d", data.Procs),
+		fmt.Sprintf("[OS](fg:blue): %s", data.OS),
+		fmt.Sprintf("[Platform](fg:blue): %s", data.Platform),
 	}
 
 	view.ProcessesWindow.Rows = data.Processes

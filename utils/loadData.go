@@ -40,6 +40,8 @@ func LoadData() (BasicInfo, error) {
 	data.Uptime = info.Uptime
 	data.KernelVersion = info.KernelVersion
 	data.Procs = info.Procs
+	data.OS = info.OS
+	data.Platform = info.Platform
 
 	tempProcesses := LoadAllProcesses()
 	var processes [][]string

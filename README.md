@@ -15,4 +15,5 @@ go get -u https://github.com/termui/v3
 With these downloaded you should be able to then run: `go run main.go`, but you can also build the application by running: `go build main.go`
 
 ## Screenshots
+(Some parts are still not done)
 ![go-manager-screenshot](./go-manager-screenshot.png)
