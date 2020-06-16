@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"math"
 	"strings"
 	"time"
 
@@ -43,6 +44,13 @@ func LoadData() (BasicInfo, error) {
 	data.OS = info.OS
 	data.Platform = info.Platform
 
+	swapData, err := LoadSwapData()
+	if err != nil {
+		return data, err
+	}
+
+	data.Swap = swapData
+
 	tempProcesses := LoadAllProcesses()
 	var processes [][]string
 
@@ -78,6 +86,23 @@ func LoadAllProcesses() []Process {
 	}
 
 	return filteredProcesses
+}
+
+// LoadSwapData returns all swap related data
+func LoadSwapData() (SwapData, error) {
+	swap, err := mem.SwapMemory()
+	var swapData SwapData
+	if err != nil {
+		return swapData, err
+	}
+
+	swapData.UsedPercent = swap.UsedPercent
+
+	// convert the bits to gigabytes
+	swapData.Total = math.Pow10(-9) * float64(swap.Total)
+	swapData.Used = math.Pow10(-9) * float64(swap.Used)
+
+	return swapData, nil
 }
 
 // LoadSingleProcessData loads all the data into the predefined process struct
