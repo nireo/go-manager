@@ -59,6 +59,7 @@ type View struct {
 	Grid            *ui.Grid
 	RenderTab       RenderTab
 	SettingsPage    *ui.Grid
+	SettingsList    *widgets.List
 }
 
 // Init initializes the ui
@@ -82,11 +83,22 @@ func (view *View) Init() {
 		case 0:
 			ui.Render(view.Grid)
 		case 1:
-			ui.Render(view.ProcessesWindow)
+			ui.Render(view.SettingsList)
 		}
 	}
 
 	terminalWidth, terminalHeight := ui.TerminalDimensions()
+	view.SettingsList.Title = "Settings"
+	view.SettingsList.SetRect(0, 0, terminalWidth, terminalHeight)
+
+	// we don't really need a grid at this point, but just thinking about the future, it provides better scalability
+	view.SettingsPage.SetRect(0, 0, terminalWidth, terminalHeight)
+	view.Grid.Set(
+		ui.NewRow(1.0,
+			ui.NewCol(1.0, view.SettingsList),
+		),
+	)
+
 	view.Grid.SetRect(0, 0, terminalWidth, terminalHeight)
 	view.Grid.Set(
 		ui.NewRow(1.0/5,
@@ -108,6 +120,8 @@ func NewView() *View {
 		Data:            BasicInfo{},
 		Grid:            ui.NewGrid(),
 		TabPanel:        widgets.NewTabPane("monitor", "settings"),
+		SettingsPage:    ui.NewGrid(),
+		SettingsList:    widgets.NewList(),
 	}
 
 	view.Init()
@@ -144,5 +158,5 @@ func (view *View) Render(data BasicInfo) {
 	view.ProcessesWindow.Rows = data.Processes
 
 	//ui.Render(view.List, view.SystemInfoList, view.ProcessesWindow)
-	ui.Render(view.TabPanel, view.Grid)
+	ui.Render(view.TabPanel)
 }

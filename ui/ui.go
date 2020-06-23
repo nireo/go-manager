@@ -35,12 +35,12 @@ func Run() {
 			switch e.ID {
 			case "q", "<C-c>":
 				return
-			case "h":
+			case "h", "H":
 				view.TabPanel.FocusLeft()
 				ui.Clear()
 				ui.Render(view.TabPanel)
 				view.RenderTab()
-			case "l":
+			case "l", "L":
 				view.TabPanel.FocusRight()
 				ui.Clear()
 				ui.Render(view.TabPanel)
