@@ -35,6 +35,16 @@ func Run() {
 			switch e.ID {
 			case "q", "<C-c>":
 				return
+			case "h":
+				view.TabPanel.FocusLeft()
+				ui.Clear()
+				ui.Render(view.TabPanel)
+				view.RenderTab()
+			case "l":
+				view.TabPanel.FocusLeft()
+				ui.Clear()
+				ui.Render(view.TabPanel)
+				view.RenderTab()
 			}
 
 		// handle the tick sent to time channel

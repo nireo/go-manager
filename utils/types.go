@@ -47,13 +47,18 @@ type Process struct {
 	User          string
 }
 
+type RenderTab func()
+
 // View data structure
 type View struct {
 	List            *widgets.List
 	SystemInfoList  *widgets.List
 	ProcessesWindow *widgets.Table
+	TabPanel        *widgets.TabPane
 	Data            BasicInfo
 	Grid            *ui.Grid
+	RenderTab       RenderTab
+	SettingsPage    *ui.Grid
 }
 
 // Init initializes the ui
@@ -70,6 +75,16 @@ func (view *View) Init() {
 		[]string{"PID", "NAME", "USER", "CPU%", "RUNNING"},
 	}
 	view.ProcessesWindow.RowSeparator = false
+
+	view.TabPanel.SetRect(0, 0, 20, 3)
+	view.RenderTab = func() {
+		switch view.TabPanel.ActiveTabIndex {
+		case 0:
+			ui.Render(view.Grid)
+		case 1:
+			ui.Render(view.ProcessesWindow)
+		}
+	}
 
 	terminalWidth, terminalHeight := ui.TerminalDimensions()
 	view.Grid.SetRect(0, 0, terminalWidth, terminalHeight)
@@ -92,6 +107,7 @@ func NewView() *View {
 		ProcessesWindow: widgets.NewTable(),
 		Data:            BasicInfo{},
 		Grid:            ui.NewGrid(),
+		TabPanel:        widgets.NewTabPane("monitor", "settings"),
 	}
 
 	view.Init()
@@ -111,8 +127,8 @@ func (view *View) Render(data BasicInfo) {
 		fmt.Sprintf("[Core 2](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[1]), data.CorePercentages[1]),
 		fmt.Sprintf("[Core 3](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[2]), data.CorePercentages[2]),
 		fmt.Sprintf("[Core 4](fg:blue): %s %.1f", CPUProgressBar(data.CorePercentages[3]), data.CorePercentages[3]),
-		fmt.Sprintf("[Memory](fg:blue): %0.2f/%0.2f GB (%0.1f/100.0)", data.Memory.Used, data.Memory.Total, data.Memory.UsedPercent),
-		fmt.Sprintf("[Swap](fg:blue) %0.2f/%0.2f GB (%0.1f/100.0)", data.Swap.Used, data.Swap.Total, data.Swap.UsedPercent),
+		fmt.Sprintf("[Memory](fg:blue): %0.2f/%0.2f GB (%0.1f%%/100.0%%)", data.Memory.Used, data.Memory.Total, data.Memory.UsedPercent),
+		fmt.Sprintf("[Swap](fg:blue) %0.2f/%0.2f GB (%0.1f%%/100.0%%)", data.Swap.Used, data.Swap.Total, data.Swap.UsedPercent),
 	}
 
 	view.SystemInfoList.Rows = []string{
@@ -128,5 +144,5 @@ func (view *View) Render(data BasicInfo) {
 	view.ProcessesWindow.Rows = data.Processes
 
 	//ui.Render(view.List, view.SystemInfoList, view.ProcessesWindow)
-	ui.Render(view.Grid)
+	ui.Render(view.TabPanel)
 }
