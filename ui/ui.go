@@ -41,7 +41,7 @@ func Run() {
 				ui.Render(view.TabPanel)
 				view.RenderTab()
 			case "l":
-				view.TabPanel.FocusLeft()
+				view.TabPanel.FocusRight()
 				ui.Clear()
 				ui.Render(view.TabPanel)
 				view.RenderTab()

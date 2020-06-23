@@ -144,5 +144,5 @@ func (view *View) Render(data BasicInfo) {
 	view.ProcessesWindow.Rows = data.Processes
 
 	//ui.Render(view.List, view.SystemInfoList, view.ProcessesWindow)
-	ui.Render(view.TabPanel)
+	ui.Render(view.TabPanel, view.Grid)
 }
