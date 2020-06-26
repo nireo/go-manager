@@ -64,14 +64,16 @@ type View struct {
 
 // Init initializes the ui
 func (view *View) Init() {
+	terminalWidth, terminalHeight := ui.TerminalDimensions()
+
 	view.List.Title = "CPU & Memory information"
-	view.List.SetRect(0, 0, int(GetTerminalWidth()/2), int(GetTerminalHeight()/5))
+	view.List.SetRect(0, 0, terminalWidth/2, terminalHeight/5)
 
 	view.SystemInfoList.Title = "System information"
-	view.SystemInfoList.SetRect(int(GetTerminalWidth()/2), 0, int(GetTerminalWidth()), int(GetTerminalHeight()/5))
+	view.SystemInfoList.SetRect(terminalWidth/2, 0, terminalWidth, terminalHeight/5)
 
 	view.ProcessesWindow.Title = "Processes"
-	view.ProcessesWindow.SetRect(0, 13, int(GetTerminalWidth()), int(GetTerminalHeight()/3)*2)
+	view.ProcessesWindow.SetRect(0, 13, terminalWidth, (terminalHeight/3)*2)
 	view.ProcessesWindow.Rows = [][]string{
 		[]string{"PID", "NAME", "USER", "CPU%", "RUNNING"},
 	}
@@ -86,8 +88,6 @@ func (view *View) Init() {
 			ui.Render(view.SettingsList)
 		}
 	}
-
-	terminalWidth, terminalHeight := ui.TerminalDimensions()
 	view.SettingsList.Title = "Settings"
 	view.SettingsList.SetRect(0, 0, terminalWidth, terminalHeight)
 
