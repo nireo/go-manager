@@ -128,9 +128,17 @@ func NewView() *View {
 	return view
 }
 
-// Resize is used when an terminal resize event occurs and it updates list dimensions accordinly
+// Resize is used when an terminal resize event occurs and it updates list dimensions accordingly
 func (view *View) Resize() {
-	view.List.SetRect(0, 0, int(GetTerminalWidth()/2), int(GetTerminalHeight()/4))
+	terminalWidth := GetTerminalWidth()
+	terminalHeight := GetTerminalHeight()
+
+	view.List.SetRect(0, 0, terminalWidth/2, terminalHeight/4)
+	view.SystemInfoList.SetRect(terminalWidth/2, 0, terminalWidth, terminalHeight/5)
+	view.ProcessesWindow.SetRect(0, 13, terminalWidth, (terminalHeight/3)*2)
+	view.SettingsList.SetRect(0, 0, terminalWidth, terminalHeight)
+	view.Grid.SetRect(0, 0, terminalWidth, terminalHeight)
+	view.SettingsPage.SetRect(0, 0, terminalWidth, terminalHeight)
 }
 
 // Render is used to update screen with new data.
