@@ -80,7 +80,7 @@ func (view *View) Init() {
 	view.ProcessesWindow.RowSeparator = false
 
 	view.TabPanel.SetRect(0, 0, 20, 3)
-	view.RenderTab = func() {
+	/*view.RenderTab = func() {
 		switch view.TabPanel.ActiveTabIndex {
 		case 0:
 			ui.Render(view.Grid)
@@ -88,6 +88,7 @@ func (view *View) Init() {
 			ui.Render(view.SettingsList)
 		}
 	}
+	 */
 	view.SettingsList.Title = "Settings"
 	view.SettingsList.SetRect(0, 0, terminalWidth, terminalHeight)
 
@@ -164,7 +165,5 @@ func (view *View) Render(data BasicInfo) {
 	}
 
 	view.ProcessesWindow.Rows = data.Processes
-
-	//ui.Render(view.List, view.SystemInfoList, view.ProcessesWindow)
-	ui.Render(view.TabPanel)
+	ui.Render(view.Grid)
 }
